@@ -18,7 +18,7 @@
    ------------------------------------------------------------------------- */
 @font-face {
   font-family: "my-font";
-  src: url("/font/Pia_font-Regular.otf") format("opentype");
+  src: url("font/Pia_font-Regular.otf") format("opentype");
 }
 
 .my-font { font-family: "my-font", serif; }
