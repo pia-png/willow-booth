@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willow Booth</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="eyebrow">WILLOW BOOTH</div>
+    <h1 id="mainHeading">Pick your frame</h1>
+    <div class="sub" id="mainSub">Three frames to choose from. Then step in.</div>
+</header>
+
+<div id="selectScreen"> 
+  <div class="frame-grid">
+ 
+    <div class="frame-card" data-frame="woods">
+      <div class="mini-strip">
+        <div class="mini-frame woods"></div>
+      </div>
+      <div class="frame-title">Woods</div>
+      <div class="frame-desc">In a cozy wood.</div>
+    </div>
+ 
+    <div class="frame-card" data-frame="ocean">
+      <div class="mini-strip">
+        <div class="mini-frame ocean"></div>
+      </div>
+      <div class="frame-title">Ocean Breeze</div>
+      <div class="frame-desc">Calm blue waves, by the shore.</div>
+    </div>
+    <div class="frame-card" data-frame="sky">
+      <div class="mini-strip">
+        <div class="mini-frame sky"></div>
+      </div>
+      <div class="frame-title">Sky</div>
+      <div class="frame-desc">Vast sunset sky, endless horizon.</div>
+    </div>
+ 
+  </div>
+
+  
+  <div class="select-footer">
+    <button class="btn" id="enterBoothBtn" disabled>Enter the booth →</button>
+    <div class="select-hint">You can switch frames anytime from inside the booth.</div>
+  </div>
+</div>
+
+<div id="boothScreen">
+    <div class="booth-topbar">
+        <button class="btn ghost" id="changeFrameBtn">← Change frame</button>
+        <span class="frame-badge" id="frameBadge">Woods</span>
+    </div>
+
+    <div class="booth">
+        <div class="camera">
+            <div class="viewfinder" id="viewfinder">
+                <div class="flash" id="flash"></div>
+                <div class="countdown-num" id="countdownNum"></div>
+                
+                <div class="placeholder" id="placeholder">
+                    Camera's off. <br>
+                    <button class="btn" id="startBtn">Turn on camera</button>
+                </div>
+                <video id="video" class="filter-none" autoplay playsinline muted style="display:none;"></video>
+            </div>
+            <div class="shutter-wrap">
+                <span class="shot-count" id="shotCount">0 / 3 shots</span>
+                <button class="shutter" id="shutterBtn" disabled title="Take a photo"></button>
+            </div>
+            <div class="status" id="status">Turn on the camera to begin.</div>
+        </div>
+
+        <div class="strip-unit">
+            <div class="peg-line"></div>
+            <div class="filmstrip theme-woods" id="filmstrip">
+                <div class="strip-label" id="stripLabel">WILLOW BOOTH</div>
+                <div class="frame-slot" id="slot0"><span class="empty-dot"></span><span class="frame-index">01</span></div>
+                <div class="frame-slot" id="slot1"><span class="empty-dot"></span><span class="frame-index">02</span></div>
+                <div class="frame-slot" id="slot2"><span class="empty-dot"></span><span class="frame-index">03</span></div>
+            </div>
+            <div class="strip-actions">
+                <button class="btn" id="downloadBtn" disabled>Download strip</button>
+                <button class="btn ghost" id="resetBtn">Retake all</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas class="hidden-canvas" id="captureCanvas"></canvas>
+<canvas class="hidden-canvas" id="stripCanvas"></canvas>
+
+<footer>Enjoy your photos!</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

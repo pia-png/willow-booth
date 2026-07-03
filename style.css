@@ -1,0 +1,562 @@
+/* =========================================================================
+   WILLOW BOOTH — Mini Photo Booth
+   Stylesheet organized as:
+     1. Font
+     2. Design tokens 
+     3. Base
+     4. Header
+     5. Buttons
+     6. Screen: frame select
+     7. Screen: booth (layout + camera)
+     8. Filmstrip (live preview)
+     9. Theme overrides (woods / ocean / sky)
+    10. Footer + utilities
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. Font
+   ------------------------------------------------------------------------- */
+@font-face {
+  font-family: "my-font";
+  src: url("/font/Pia_font-Regular.otf") format("opentype");
+}
+
+.my-font { font-family: "my-font", serif; }
+
+/* -------------------------------------------------------------------------
+   2. Design tokens
+   ------------------------------------------------------------------------- */
+:root{
+  --display-font: "my-font", "Special Elite", serif;
+
+  --cream:            #f7efe1;  /* page background */
+  --cream-card:       #fffaf3;  /* card / raised surface background */
+  --border-tan:       #e3d9c4;  /* soft tan border on cream surfaces */
+
+  --ink:               #1e3d22; /* primary text on cream */
+  --forest:            #2f5233; /* accent on cream */
+  --sage:              #7fae82; /* accent on dark surfaces */
+  --ink-muted:         #8a8371; /* secondary/muted text */
+
+  --camera-body-top:   #2a2826;
+  --camera-body-bottom:#1c1b1a;
+  --camera-border:     #3a3733;
+  --viewfinder-black:  #0c0b0a;
+  --text-on-dark:      #c9c2af; 
+
+  --shutter-highlight: #6fae74;
+  --shutter:           #3f6b46;
+  --shutter-dark:      #294a30;
+  --ocean-bg:          #fdf6ec;
+  --ocean-slot-bg:     #fffaf3;
+  --ocean-border:      #cfe0c9;
+  --ocean-muted:       #7c9473;
+
+  --sky-bg:            #fdf6ec;
+  --sky-border:        #cfe0c9;
+  --sky-label:         #dff0d8;
+  --sky-muted:         #5c7a63;
+}
+
+/* -------------------------------------------------------------------------
+   3. Reset / base
+   ------------------------------------------------------------------------- */
+
+   *{ 
+    box-sizing: border-box;
+     
+  }
+
+
+html, body{ 
+  margin: 0; 
+  padding: 0; 
+}
+
+body{
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "my-font";
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 64px;
+}
+
+button{ 
+  font-family: "my-font", 
+  serif; cursor: pointer; 
+}
+
+/* -------------------------------------------------------------------------
+   4. Header
+   ------------------------------------------------------------------------- */
+  
+header{ 
+  text-align: center; 
+  margin-bottom: 28px; 
+}
+
+.eyebrow{
+  font-size: 16px; 
+  letter-spacing: 0.35em; 
+  text-transform: uppercase;
+  color: var(--forest); 
+  margin-bottom: 6px;
+}
+
+h1{
+  font-family: "my-font";
+  font-size: clamp(26px, 5vw, 40px);
+  margin: 0; letter-spacing: 0.02em; color: var(--ink);
+}
+
+.sub{ 
+  font-size: 17px; 
+  color: var(--forest); 
+  margin-top: 8px; 
+  max-width: 480px; 
+}
+
+/* -------------------------------------------------------------------------
+   5. Buttons
+   ------------------------------------------------------------------------- */
+
+   .btn{
+    background: var(--forest); 
+    color: var(--cream); 
+    border: none;
+    font-weight: 700; 
+    font-size: 17px; 
+    padding: 12px 22px;
+    border-radius: 4px; 
+    letter-spacing: 0.03em;
+}
+
+.btn:hover{ 
+  filter: brightness(1.08); 
+}
+
+.btn.ghost{
+  background: transparent; 
+  color: var(--ink); 
+  border: 1px solid var(--border-tan);
+  font-weight: 500; 
+  padding: 9px 16px; 
+  font-size: 16px; 
+  border-radius: 4px;
+}
+
+.btn.ghost:hover{ 
+  border-color: var(--forest); 
+  color: var(--forest); 
+}
+
+.btn:disabled{ 
+  opacity: 0.35; 
+  cursor: not-allowed; 
+}
+
+/* -------------------------------------------------------------------------
+   6. Screen: frame select
+   ------------------------------------------------------------------------- */
+
+#selectScreen{ 
+  width: 100%; display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.frame-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px; 
+  max-width: 880px; 
+  width: 100%; 
+  margin-bottom: 26px;
+}
+
+.frame-card{
+  background: var(--cream-card); 
+  border: 1px solid var(--border-tan); 
+  border-radius: 10px;
+  padding: 18px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 12px;
+  text-align: center; 
+  cursor: pointer;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.frame-card:hover{ 
+  transform: translateY(-4px); 
+  border-color: var(--ocean-border); 
+}
+
+.frame-card.active{ 
+  border-color: var(--forest); 
+  box-shadow: 0 0 0 2px rgba(47, 82, 51, 0.35); 
+}
+
+.mini-strip{ 
+  width: 100%; 
+  max-width: 120px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 5px; 
+}
+
+.mini-frame{ 
+  width: 100%; 
+  aspect-ratio: 4 / 3; 
+  border-radius: 4px; 
+  position: relative; 
+  overflow: hidden; 
+}
+
+.mini-frame.woods{ 
+  background: var(--cream-card); 
+  border: 1px solid var(--forest); 
+}
+
+.mini-frame.woods::after{ 
+  content: ''; 
+  position: absolute; 
+  inset: 6px; background: 
+  var(--viewfinder-black); 
+  border-radius: 2px; 
+}
+
+.mini-frame.has-image::after{ 
+  display: none; 
+}
+
+.mini-frame.ocean{ 
+  background: var(--cream-card); 
+  border: 2px solid var(--ocean-border); 
+}
+
+.mini-frame.ocean::after{ 
+  content: ''; 
+  position: absolute; 
+  inset: 7px; 
+  background: var(--ocean-slot-bg); 
+  border-radius: 8px; 
+}
+
+.mini-frame.sky{ 
+  background: var(--cream-card); 
+  border: 1px solid var(--ocean-border); 
+}
+
+.frame-title{ 
+  font-family: var(--display-font); 
+  font-size: 18px; 
+  color: var(--ink); 
+}
+
+.frame-desc{ 
+  font-size: 15px; 
+  color: var(--ink-muted); 
+  line-height: 1.4; 
+}
+
+.select-footer{ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.select-hint{ 
+  font-size: 15px; 
+  color: var(--ink-muted); 
+}
+
+/* -------------------------------------------------------------------------
+   7. Screen: booth (layout + camera)
+   ------------------------------------------------------------------------- */
+#boothScreen{ 
+  display: none; 
+  width: 100%; 
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.booth-topbar{ 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  margin-bottom: 20px; 
+}
+
+.frame-badge{
+  font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--forest); border: 1px solid var(--border-tan); padding: 5px 10px; border-radius: 20px;
+}
+
+.booth{
+  display: flex; gap: 28px; flex-wrap: wrap; justify-content: center;
+  align-items: flex-start; max-width: 1000px; width: 100%;
+}
+
+.camera{
+  background: linear-gradient(180deg, var(--camera-body-top), var(--camera-body-bottom));
+  border: 1px solid var(--camera-border); border-radius: 6px; padding: 18px; width: min(560px, 100%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.viewfinder{
+  position: relative; 
+  background: var(--viewfinder-black); 
+  border-radius: 3px; overflow: hidden;
+  aspect-ratio: 4 / 3; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+video{ 
+  position: relative; 
+  z-index: 1; 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  display: block; 
+  transform: scaleX(-1); 
+}
+
+video.filter-bw{ 
+  filter: grayscale(1) contrast(1.15); 
+}
+
+video.filter-sepia{ 
+  filter: sepia(0.75) contrast(1.05) saturate(1.2); 
+}
+
+video.filter-vintage{ 
+  filter: contrast(1.1) saturate(0.75) sepia(0.25) brightness(1.02); 
+}
+
+video.filter-none{ 
+  filter: none; 
+}
+
+.placeholder{ 
+  color: var(--ink-muted); 
+  font-size: 13px; 
+  text-align: center; 
+  padding: 20px; 
+  line-height: 1.6; 
+}
+
+.placeholder button{ 
+  margin-top: 10px; 
+}
+
+.flash{ 
+  position: absolute; 
+  inset: 0; z-index: 2; 
+  background: #fff; 
+  opacity: 0; 
+  pointer-events: none; 
+}
+
+.flash.pop{ 
+  animation: flashpop 260ms ease-out; 
+}
+
+@keyframes flashpop{ 0%{ opacity: 0; } 15%{ opacity: 0.95; } 100%{ opacity: 0; } }
+
+.countdown-num{
+  position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center;
+  font-family: var(--display-font); font-size: 120px; font-weight: 700; color: var(--sage);
+  text-shadow: 0 0 34px rgba(127, 174, 130, 0.65); opacity: 0; pointer-events: none;
+}
+.countdown-num.show{ animation: countpop 980ms ease-out; }
+@keyframes countpop{
+  0%   { opacity: 0;    transform: scale(1.5); }
+  12%  { opacity: 1;    transform: scale(1); }
+  78%  { opacity: 1;    transform: scale(1); }
+  100% { opacity: 0;    transform: scale(0.88); }
+}
+
+.shutter-wrap{ display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.shot-count{ font-size: 16px; color: var(--text-on-dark); min-width: 64px; text-align: right; }
+.shutter{
+  width: 64px; height: 64px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--shutter-highlight), var(--shutter) 60%);
+  border: 3px solid var(--shutter-dark); cursor: pointer;
+  box-shadow: 0 6px 0 var(--shutter-dark), 0 10px 18px rgba(0, 0, 0, 0.4);
+  transition: transform 80ms ease, box-shadow 80ms ease; flex-shrink: 0;
+}
+.shutter:active{ transform: translateY(4px); box-shadow: 0 2px 0 var(--shutter-dark), 0 6px 10px rgba(0, 0, 0, 0.4); }
+.shutter:disabled{ opacity: 0.4; cursor: not-allowed; }
+
+.status{ font-size: 16px; color: var(--ink-muted); margin-top: 10px; min-height: 16px; text-align: center; }
+
+/* -------------------------------------------------------------------------
+   8. Filmstrip (live preview, themed)
+   ------------------------------------------------------------------------- */
+.strip-unit{ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  width: 190px; 
+}
+
+.peg-line{
+  width: 100%; 
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--sprocket-dash) 0 8px, transparent 8px 14px);
+  margin-bottom: -2px; 
+  position: relative; z-index: 2;
+}
+
+.filmstrip{
+  background: var(--film-dark-bg); border: 1px solid var(--film-dark-border); border-radius: 4px;
+  padding: 14px 12px 18px; display: flex; flex-direction: column; gap: 10px;
+  min-height: 420px; width: 100%; position: relative;
+}
+
+.strip-label{
+  font-family: var(--display-font); 
+  font-size: 17px; 
+  color: var(--sage);
+  text-align: center; 
+  margin-bottom: 2px; 
+  letter-spacing: 0.04em;
+  position: relative; 
+  z-index: 4; 
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.frame-slot{
+  background: var(--slot-dark-bg); 
+  border: 1px solid var(--film-dark-border); 
+  border-radius: 2px;
+  aspect-ratio: 4 / 3; 
+  overflow: hidden; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  position: relative; 
+  z-index: 2; 
+  box-sizing: border-box;
+}
+
+.frame-slot img{ width: 100%; height: 100%; object-fit: cover; animation: develop 900ms ease-out; }
+@keyframes develop{
+  0%   { filter: brightness(3) contrast(0.4) saturate(0); opacity: 0.2; }
+  100% { filter: brightness(1) contrast(1) saturate(1); opacity: 1; }
+}
+.frame-slot .empty-dot{ width: 5px; height: 5px; border-radius: 50%; background: var(--camera-border); }
+.frame-index{ position: absolute; bottom: 3px; right: 5px; font-size: 13px; color: var(--index-dark); font-family: "my-font", serif; }
+
+.frame-overlay-img{
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: fill; pointer-events: none; z-index: 3;
+}
+
+/* -------------------------------------------------------------------------
+   9. Theme overrides
+   ------------------------------------------------------------------------- */
+
+/* woods */
+.filmstrip.theme-woods .frame-slot{ 
+  background: var(--cream-card); 
+  border-color: rgba(0, 0, 0, 0.1); 
+}
+
+.filmstrip.theme-woods .frame-index{ 
+  color: var(--ink); 
+}
+
+.filmstrip.theme-woods .frame-slot .empty-dot{ 
+  background: var(--ink); 
+}
+
+.filmstrip.theme-woods .strip-label{ 
+  color: var(--ink); 
+  text-shadow: none; 
+}
+
+
+/* ocean */
+.filmstrip.theme-ocean{ 
+  background: var(--ocean-bg); 
+  border-color: var(--ocean-border);
+}
+
+.filmstrip.theme-ocean .strip-label{ 
+  font-family: "my-font", serif; 
+  font-size: 26px; 
+  color: #2f7ba6; 
+}
+
+.filmstrip.theme-ocean .frame-slot{ 
+  background: var(--ocean-slot-bg); 
+  border-color: var(--ocean-border); 
+  border-radius: 10px; 
+}
+
+.filmstrip.theme-ocean .frame-index{ 
+  color: var(--ocean-muted); 
+}
+
+/* sky */
+.filmstrip.theme-sky{ 
+  background: var(--sky-bg); 
+  border-color: var(--sky-border); 
+}
+
+.filmstrip.theme-sky .strip-label{ 
+  font-family: "my-font", serif; 
+  letter-spacing: 0.2em; 
+  color: var(--sky-label); 
+}
+
+.filmstrip.theme-sky .frame-slot{ 
+  background: var(--sky-bg); 
+  border-color: var(--sky-border); 
+  border-radius: 0; 
+}
+
+.filmstrip.theme-sky .frame-slot img{ 
+  filter: none; 
+}
+
+.filmstrip.theme-sky .frame-index{ 
+  color: var(--sky-muted); 
+}
+
+.strip-actions{ 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+  margin-top: 14px; 
+  width: 100%; 
+}
+
+/* -------------------------------------------------------------------------
+   10. Footer + utilities
+   ------------------------------------------------------------------------- */
+footer{ 
+  margin-top: 36px; 
+  font-size: 15px; 
+  color: var(--ink-muted); 
+  text-align: center; 
+}
+
+canvas.hidden-canvas{ 
+  display: none; 
+}
+
+@media (prefers-reduced-motion: reduce){
+  .flash.pop, .countdown-num.show, .frame-slot img{ animation: none !important; }
+}
+ 
